@@ -28,29 +28,6 @@ static uint32_t timerMsCount;
 dataPoint_t currentDataPoint;
 
 
-UART_HandleTypeDef USART_Handler; //UART handle
-TIM_HandleTypeDef TIM3_Handler;   //timer handle
-
-								  /**@} */
-								  /**@name Gizwits User Interface
-								  * @{
-								  */
-
-								  /**
-								  * @brief Event handling interface
-
-								  * Description:
-
-								  * 1. Users can customize the changes in WiFi module status
-
-								  * 2. Users can add data points in the function of event processing logic, such as calling the relevant hardware peripherals operating interface
-
-								  * @param [in] info: event queue
-								  * @param [in] data: protocol data
-								  * @param [in] len: protocol data length
-								  * @return NULL
-								  * @ref gizwits_protocol.h
-								  */
 int8_t gizwitsEventProcess(eventInfo_t *info, uint8_t *gizdata, uint32_t len)
 {
 	uint8_t i = 0;
@@ -274,51 +251,46 @@ void mcuRestart(void)
 
 /**@} */
 
-void uartInit() {
-
-}
-
-void timerInit() {
-
-}
-
-
-/**
-* @brief Timer TIM3 interrupt handler
-
-* @param none
-* @return none
-*/
-void TIM3_IRQHandler(void)
-{
-	if (__HAL_TIM_GET_FLAG(&htim3, TIM_FLAG_UPDATE) != RESET)
-	{
-		if (__HAL_TIM_GET_IT_SOURCE(&htim3, TIM_IT_UPDATE) != RESET)
-		{
-			__HAL_TIM_CLEAR_IT(&htim3, TIM_IT_UPDATE);
-			gizTimerMs();
-		}
-	}
-}
 
 
 
 /**
-* @brief USART2 interrupt handler
+* @brief 定时器TIM中断处理函数
 
-* Receive the serial protocol data from the WiFi module
 * @param none
 * @return none
 */
-void USART2_IRQHandler(void)
-{
-	uint8_t value = 0;
 
-	if ((__HAL_UART_GET_FLAG(&huart2, UART_FLAG_RXNE) != RESET))
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	if (htim->Instance == TIM3)//tim10 1ms中断，作为MCU和WIFI模组的心跳用
 	{
-		value = huart2.Instance->DR;
-		gizPutData(&value, 1);
+		gizTimerMs();
 	}
+	if (htim->Instance == TIM4)//tim11 1ms中断，按键检测逻辑
+	{
+
+	}
+}
+
+
+/**
+* @brief USART串口中断函数
+
+* 接收功能，用于接收与WiFi模组间的串口协议数据
+* @param none
+* @return none
+*/
+
+uint8_t RxData = 0;
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
+{
+	if (UartHandle->Instance == USART2)
+	{
+		gizPutData(&RxData, 1);
+		HAL_UART_Receive_IT(&huart2, &RxData, 1);
+	}
+
 }
 
 
@@ -356,16 +328,23 @@ int32_t uartWrite(uint8_t *buf, uint32_t len)
 
 	for (i = 0; i<len; i++)
 	{
-		HAL_UART_Transmit(&USART_Handler, &buf[i], 1, 1000);
-		while (__HAL_UART_GET_FLAG(&USART_Handler, UART_FLAG_TXE) == RESET);//Loop until the end of transmission
+		HAL_UART_Transmit(&huart2, &buf[i], 1, 1000);
+		while (__HAL_UART_GET_FLAG(&huart2, UART_FLAG_TXE) == RESET);//Loop until the end of transmission
 
 		if (i >= 2 && buf[i] == 0xFF)
 		{
-			HAL_UART_Transmit(&USART_Handler, data55, 1, 1000);
-			while (__HAL_UART_GET_FLAG(&USART_Handler, UART_FLAG_TXE) == RESET);//Loop until the end of transmission
+			HAL_UART_Transmit(&huart2, data55, 1, 1000);
+			while (__HAL_UART_GET_FLAG(&huart2, UART_FLAG_TXE) == RESET);//Loop until the end of transmission
 		}
 	}
 
 	return len;
 }
 
+void uartInit() {
+	HAL_UART_Receive_IT(&huart2, &RxData, 1);
+}
+
+void timerInit() {
+	HAL_TIM_Base_Start_IT(&htim3);
+}

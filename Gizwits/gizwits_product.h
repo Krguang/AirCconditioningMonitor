@@ -34,7 +34,7 @@ extern "C" {
 /**
 * Communication module type
 */
-#define MODULE_TYPE 0 //0,WIFI ;1,GPRS
+#define MODULE_TYPE 1 //0,WIFI ;1,GPRS
 
 
 
