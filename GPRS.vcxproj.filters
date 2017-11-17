@@ -459,6 +459,9 @@
     <ClCompile Include="Utils\ringbuffer.c">
       <Filter>Source files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Src\modbusToPC.c">
+      <Filter>Source files\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gizwits\gizwits_product.h">
@@ -475,6 +478,9 @@
     </ClInclude>
     <ClInclude Include="Utils\ringBuffer.h">
       <Filter>Header files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\modbusToPC.h">
+      <Filter>Header files\Inc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -37,7 +37,7 @@ extern "C" {
 #define MODULE_TYPE 1 //0,WIFI ;1,GPRS
 
 
-
+uint16_t localArray[];
 
 
 extern dataPoint_t currentDataPoint;

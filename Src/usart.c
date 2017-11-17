@@ -43,12 +43,18 @@
 
 /* USER CODE BEGIN 0 */
 
+struct buffer Usart1ReceiveBuffer, Usart2ReceiveBuffer;
+
+volatile uint8_t Usart1ReceiveState = 0;
+volatile uint8_t Usart2ReceiveState = 0;
+
 
 int _write(int fd, char *pBuffer, int size)
 {
-	HAL_UART_Transmit(&huart1, pBuffer, size, 0xff);
+	HAL_UART_Transmit(&huart3, pBuffer, size, 0xff);
 	return size;
 }
+
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -143,7 +149,8 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(USART1_IRQn);
   /* USER CODE BEGIN USART1_MspInit 1 */
-
+	__HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
+	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
   /* USER CODE END USART1_MspInit 1 */
   }
   else if(uartHandle->Instance==USART2)
@@ -267,6 +274,27 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 } 
 
 /* USER CODE BEGIN 1 */
+
+void USART1_IRQHandler(void)
+{
+	uint8_t Clear = Clear;
+
+
+	if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_RXNE) != RESET)
+	{
+		Usart1ReceiveBuffer.BufferArray[Usart1ReceiveBuffer.BufferLen++] = huart1.Instance->DR;
+	}
+
+	if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_IDLE) != RESET)
+	{
+		Clear = huart1.Instance->SR;
+		Clear = huart1.Instance->DR;
+		Usart1ReceiveState = 1;
+		HAL_GPIO_TogglePin(led1_GPIO_Port, led1_Pin);
+	}
+
+}
+
 
 /* USER CODE END 1 */
 

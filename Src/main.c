@@ -45,6 +45,7 @@
 /* USER CODE BEGIN Includes */
 
 #include "gizwits_product.h"
+#include "modbusToPC.h"
 
 #define GIZWITS_LOG printf
 
@@ -116,7 +117,7 @@ int main(void)
 
   /* USER CODE BEGIN 3 */
 	  userHandle();
-
+	  modbusSlave();
 	  gizwitsHandle((dataPoint_t *)&currentDataPoint);
 
   }

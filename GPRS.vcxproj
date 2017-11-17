@@ -82,6 +82,7 @@
     <ClCompile Include="Gizwits\gizwits_protocol.c" />
     <ClCompile Include="Src\gpio.c" />
     <ClCompile Include="Src\main.c" />
+    <ClCompile Include="Src\modbusToPC.c" />
     <ClCompile Include="Src\stm32f1xx_hal_msp.c" />
     <ClCompile Include="Src\stm32f1xx_it.c" />
     <ClCompile Include="Src\system_stm32f1xx.c" />
@@ -90,6 +91,7 @@
     <ClCompile Include="Utils\common.c" />
     <ClCompile Include="Utils\dataPointTools.c" />
     <ClCompile Include="Utils\ringbuffer.c" />
+    <ClInclude Include="Inc\modbusToPC.h" />
     <ClInclude Include="Utils\common.h" />
     <ClInclude Include="Utils\dataPointTools.h" />
     <ClInclude Include="Utils\ringBuffer.h" />

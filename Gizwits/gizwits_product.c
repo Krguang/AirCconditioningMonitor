@@ -27,6 +27,8 @@ static uint32_t timerMsCount;
 /** User area the current device state structure*/
 dataPoint_t currentDataPoint;
 
+uint16_t localArray[128];
+
 
 int8_t gizwitsEventProcess(eventInfo_t *info, uint8_t *gizdata, uint32_t len)
 {
@@ -56,10 +58,12 @@ int8_t gizwitsEventProcess(eventInfo_t *info, uint8_t *gizdata, uint32_t len)
 			if (0x01 == currentDataPoint.valueSW_KongTiao)
 			{
 				//user handle
+				localArray[0] = 1;
 			}
 			else
 			{
 				//user handle    
+				localArray[0] = 0;
 			}
 			break;
 		case EVENT_SW_ZhiBan:
@@ -68,10 +72,12 @@ int8_t gizwitsEventProcess(eventInfo_t *info, uint8_t *gizdata, uint32_t len)
 			if (0x01 == currentDataPoint.valueSW_ZhiBan)
 			{
 				//user handle
+				localArray[1] = 1;
 			}
 			else
 			{
 				//user handle    
+				localArray[1] = 0;
 			}
 			break;
 		case EVENT_SW_FuYa:
@@ -80,10 +86,12 @@ int8_t gizwitsEventProcess(eventInfo_t *info, uint8_t *gizdata, uint32_t len)
 			if (0x01 == currentDataPoint.valueSW_FuYa)
 			{
 				//user handle
+				localArray[3] = 1;
 			}
 			else
 			{
 				//user handle    
+				localArray[3] = 0;
 			}
 			break;
 
@@ -92,11 +100,13 @@ int8_t gizwitsEventProcess(eventInfo_t *info, uint8_t *gizdata, uint32_t len)
 			currentDataPoint.valueWenDuSet = dataPointPtr->valueWenDuSet;
 			GIZWITS_LOG("Evt:EVENT_WenDuSet %d\n", currentDataPoint.valueWenDuSet);
 			//user handle
+			localArray[5] = currentDataPoint.valueWenDuSet;
 			break;
 		case EVENT_ShiDuSet:
 			currentDataPoint.valueShiDuSet = dataPointPtr->valueShiDuSet;
 			GIZWITS_LOG("Evt:EVENT_ShiDuSet %d\n", currentDataPoint.valueShiDuSet);
 			//user handle
+			localArray[6] = currentDataPoint.valueShiDuSet;
 			break;
 		case EVENT_YaChaSet:
 			currentDataPoint.valueYaChaSet = dataPointPtr->valueYaChaSet;
@@ -161,20 +171,18 @@ int8_t gizwitsEventProcess(eventInfo_t *info, uint8_t *gizdata, uint32_t len)
 */
 void userHandle(void)
 {
-	/*
-	currentDataPoint.valueZS_JiZuYunXing = ;//Add Sensor Data Collection
-	currentDataPoint.valueZS_ZhiBanYunXing = ;//Add Sensor Data Collection
-	currentDataPoint.valueZS_FuYaYunXing = ;//Add Sensor Data Collection
-	currentDataPoint.valueZS_JiZuGuZhang = ;//Add Sensor Data Collection
-	currentDataPoint.valueZS_GaoXiaoZuSe = ;//Add Sensor Data Collection
-	currentDataPoint.valueWenDuZhi = ;//Add Sensor Data Collection
-	currentDataPoint.valueShiDuZhi = ;//Add Sensor Data Collection
-	currentDataPoint.valueYaChaZhi = ;//Add Sensor Data Collection
-	currentDataPoint.valueLengShuiFa = ;//Add Sensor Data Collection
-	currentDataPoint.valueReShuiFa = ;//Add Sensor Data Collection
-	currentDataPoint.valueJiaShuiQi = ;//Add Sensor Data Collection
-
-	*/
+	
+	currentDataPoint.valueZS_JiZuYunXing = localArray[9]&1;//Add Sensor Data Collection
+	currentDataPoint.valueZS_ZhiBanYunXing = localArray[10]&1;//Add Sensor Data Collection
+	currentDataPoint.valueZS_FuYaYunXing = (localArray[10]>>1)&1;//Add Sensor Data Collection
+	currentDataPoint.valueZS_JiZuGuZhang = localArray[11]&1;//Add Sensor Data Collection
+	currentDataPoint.valueZS_GaoXiaoZuSe = localArray[12]&1;//Add Sensor Data Collection
+	currentDataPoint.valueWenDuZhi = localArray[7];//Add Sensor Data Collection
+	currentDataPoint.valueShiDuZhi = localArray[8];//Add Sensor Data Collection
+//	currentDataPoint.valueYaChaZhi = ;//Add Sensor Data Collection
+	currentDataPoint.valueLengShuiFa = localArray[13];//Add Sensor Data Collection
+	currentDataPoint.valueReShuiFa = localArray[14];//Add Sensor Data Collection
+	currentDataPoint.valueJiaShuiQi = localArray[15];//Add Sensor Data Collection
 
 }
 

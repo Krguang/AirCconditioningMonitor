@@ -22,21 +22,21 @@ gizwitsProtocol_t gizwitsProtocol;
 
 
 /**@name The serial port receives the ring buffer implementation
-* @{
+* @{	串口接收环缓冲实现
 */
-rb_t pRb;                                               ///< Ring buffer structure variable
-static uint8_t rbBuf[RB_MAX_LEN];                       ///< Ring buffer data cache buffer
+rb_t pRb;                                               ///< Ring buffer structure variable 循环缓冲区结构变量
+static uint8_t rbBuf[RB_MAX_LEN];                       ///< Ring buffer data cache buffer  环缓冲数据缓存缓冲区
 
 
-														/**@} */
+/**@} */
 
-														/**
-														* @brief Write data to the ring buffer
-														* @param [in] buf        : buf adress
-														* @param [in] len        : byte length
-														* @return   correct : Returns the length of the written data
-														failure : -1
-														*/
+/**
+* @brief Write data to the ring buffer 将数据写入环缓冲区
+* @param [in] buf        : buf adress 
+* @param [in] len        : byte length
+* @return   correct : Returns the length of the written data
+failure : -1
+*/
 int32_t gizPutData(uint8_t *buf, uint32_t len)
 {
 	int32_t count = 0;
@@ -60,7 +60,7 @@ int32_t gizPutData(uint8_t *buf, uint32_t len)
 
 
 /**
-* @brief Protocol header initialization
+* @brief Protocol header initialization  协议头初始化
 *
 * @param [out] head         : Protocol header pointer
 *
@@ -82,7 +82,7 @@ static int8_t gizProtocolHeadInit(protocolHead_t *head)
 }
 
 /**
-* @brief Protocol ACK check processing function
+* @brief Protocol ACK check processing function 协议ACK检查处理功能
 *
 * @param [in] data            : data adress
 * @param [in] len             : data length
@@ -107,7 +107,7 @@ static int8_t gizProtocolWaitAck(uint8_t *gizdata, uint32_t len)
 	return 0;
 }
 /**
-* @brief generates "controlled events" according to protocol
+* @brief generates "controlled events" according to protocol 根据协议生成“受控事件”
 
 * @param [in] issuedData: Controlled data
 * @param [out] info: event queue
