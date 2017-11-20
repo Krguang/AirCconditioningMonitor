@@ -29,8 +29,8 @@ extern "C" {
 #include "common.h"
 
                                                                                                                   
-#define SEND_MAX_TIME       200                     ///< 200ms resend
-#define SEND_MAX_NUM        2                       ///< resend times
+#define SEND_MAX_TIME       5000                     ///< 200ms resend
+#define SEND_MAX_NUM        3                      ///< resend times
                                                     
 #define protocol_VERSION    "00000004"              ///< protocol version
 #define P0_VERSION          "00000002"              ///< P0 protocol version

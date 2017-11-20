@@ -109,9 +109,9 @@ static int8_t gizProtocolWaitAck(uint8_t *gizdata, uint32_t len)
 /**
 * @brief generates "controlled events" according to protocol 根据协议生成“受控事件”
 
-* @param [in] issuedData: Controlled data
-* @param [out] info: event queue
-* @param [out] dataPoints: data point data
+* @param [in] issuedData: Controlled data			受控数据
+* @param [out] info: event queue					事件队列
+* @param [out] dataPoints: data point data			数据点数据
 * @return 0, the implementation of success, non-0, failed
 */
 static int8_t ICACHE_FLASH_ATTR gizDataPoint2Event(gizwitsIssued_t *issuedData, eventInfo_t *info, dataPoint_t *dataPoints)
@@ -179,10 +179,10 @@ static int8_t ICACHE_FLASH_ATTR gizDataPoint2Event(gizwitsIssued_t *issuedData, 
 }
 
 /**
-* @brief contrasts the current data with the last data
+* @brief contrasts the current data with the last data		将当前数据与最后的数据进行对比
 *
-* @param [in] cur: current data point data
-* @param [in] last: last data point data
+* @param [in] cur: current data point data					当前数据点数据
+* @param [in] last: last data point data					最后一个数据点的数据
 *
 * @return: 0, no change in data; 1, data changes
 */
@@ -312,9 +312,10 @@ static int8_t ICACHE_FLASH_ATTR gizCheckReport(dataPoint_t *cur, dataPoint_t *la
 
 /**
 * @brief User data point data is converted to wit the cloud to report data point data
+			用户数据点数据转换为机智云来报告数据点数据
 *
-* @param [in] dataPoints: user data point data address
-* @param [out] devStatusPtr: wit the cloud data point data address
+* @param [in] dataPoints: user data point data address				用户数据点数据地址
+* @param [out] devStatusPtr: wit the cloud data point data address	机智云数据点地址
 *
 * @return 0, the correct return; -1, the error returned
 */
@@ -359,11 +360,12 @@ static int8_t ICACHE_FLASH_ATTR gizDataPoints2ReportData(dataPoint_t *dataPoints
 
 /**
 * @brief This function is called by the Gagent module to receive the relevant protocol data from the cloud or APP
-* @param [in] inData The protocol data entered
-* @param [in] inLen Enter the length of the data
-* @param [out] outData The output of the protocol data
-* @param [out] outLen The length of the output data
-* @return 0, the implementation of success, non-0, failed
+		这个函数由Gagent模块调用，以接收来自云或应用程序的相关协议数据
+* @param [in] inData The protocol data entered				输入的协议数据	
+* @param [in] inLen Enter the length of the data			输入数据的长度
+* @param [out] outData The output of the protocol data		协议数据的输出
+* @param [out] outLen The length of the output data			输出数据的长度
+* @return 0, the implementation of success, non-0, failed	返回0，成功的实现，非0，失败
 */
 static int8_t gizProtocolIssuedProcess(char *did, uint8_t *inData, uint32_t inLen, uint8_t *outData, uint32_t *outLen)
 {
@@ -418,18 +420,18 @@ static int8_t gizProtocolIssuedProcess(char *did, uint8_t *inData, uint32_t inLe
 	return 0;
 }
 /**
-* @brief The protocol sends data back , P0 ACK
+* @brief The protocol sends data back , P0 ACK		协议发送数据返回，P0 ACK
 *
-* @param [in] head                  : Protocol head pointer
-* @param [in] data                  : Payload data
-* @param [in] len                   : Payload data length
-* @param [in] proFlag               : DID flag ,1 for Virtual sub device did ,0 for single product or gateway
+* @param [in] head                  : Protocol head pointer		协议头指针
+* @param [in] data                  : Payload data				有效载荷数据
+* @param [in] len                   : Payload data length		有效载荷数据长度
+* @param [in] proFlag               : DID flag ,1 for Virtual sub device did ,0 for single product or gateway 是否有标志，1为虚拟子设备，0为单一产品或网关
 *
 * @return : 0,Ack success;
 *           -1，Input Param Illegal
 *           -2，Serial send faild
 */
-static int32_t gizProtocolIssuedDataAck(protocolHead_t *head, uint8_t *gizdata, uint32_t len, uint8_t proFlag)
+static int32_t gizProtocolIssuedDataAck(protocolHead_t *head, uint8_t *gizdata, uint32_t len, uint8_t proFlag)//协议数据发布应答
 {
 	int32_t ret = 0;
 	uint8_t tx_buf[RB_MAX_LEN];
@@ -489,15 +491,15 @@ static int32_t gizProtocolIssuedDataAck(protocolHead_t *head, uint8_t *gizdata, 
 }
 
 /**
-* @brief Report data interface
+* @brief Report data interface		上报数据接口
 *
-* @param [in] action            : PO action
-* @param [in] data              : Payload data
-* @param [in] len               : Payload data length
+* @param [in] action            : PO action				PO行动
+* @param [in] data              : Payload data			有效载荷数据
+* @param [in] len               : Payload data length	有效载荷数据长度
 *
 * @return : 0,Ack success;
-*           -1，Input Param Illegal
-*           -2，Serial send faild
+*           -1，Input Param Illegal	输入参数不合法
+*           -2，Serial send faild	串行发送失败
 */
 static int32_t gizReportData(uint8_t action, uint8_t *gizdata, uint32_t len)
 {
@@ -528,13 +530,13 @@ static int32_t gizReportData(uint8_t action, uint8_t *gizdata, uint32_t len)
 
 	return ret;
 }/**
- * @brief Datapoints reporting mechanism
+ * @brief Datapoints reporting mechanism		数据点报告机制
  *
- * 1. Changes are reported immediately
+ * 1. Changes are reported immediately			立即更改报告
 
- * 2. Data timing report , 600000 Millisecond
+ * 2. Data timing report , 600000 Millisecond	数据定时报告，600000毫秒
  *
- *@param [in] currentData       : Current datapoints value
+ *@param [in] currentData       : Current datapoints value	当前数据点值
  * @return : NULL
  */
 static void gizDevReportPolicy(dataPoint_t *currentData)
@@ -566,11 +568,11 @@ static void gizDevReportPolicy(dataPoint_t *currentData)
 }
 
 /**
-* @brief Get a packet of data from the ring buffer
+* @brief Get a packet of data from the ring buffer 从环形缓冲区获取数据包
 *
-* @param [in]  rb                  : Input data address
-* @param [out] data                : Output data address
-* @param [out] len                 : Output data length
+* @param [in]  rb                  : Input data address		输入数据的地址
+* @param [out] data                : Output data address	输出数据的地址
+* @param [out] len                 : Output data length		输出数据长度
 *
 * @return : 0,Return correct ;-1，Return failure;-2，Data check failure
 */
@@ -680,9 +682,10 @@ static int8_t gizProtocolGetOnePacket(rb_t *rb, uint8_t *gizdata, uint16_t *len)
 
 
 /**
-* @brief Protocol data resend
+* @brief Protocol data resend		协议数据重发
 
 * The protocol data resend when check timeout and meet the resend limiting
+	当检查超时并满足重新发送限制时，协议数据重新发送
 
 * @param none
 *
@@ -709,9 +712,9 @@ static void gizProtocolResendData(void)
 }
 
 /**
-* @brief Clear the ACK protocol message
+* @brief Clear the ACK protocol message	清除ACK协议消息
 *
-* @param [in] head : Protocol header address
+* @param [in] head : Protocol header address	协议头地址
 *
 * @return 0， success; other， failure
 */
@@ -734,11 +737,11 @@ static int8_t gizProtocolWaitAckCheck(protocolHead_t *head)
 }
 
 /**
-* @brief Send general protocol message data
+* @brief Send general protocol message data		发送通用协议消息数据
 *
-* @param [in] head              : Protocol header address
+* @param [in] head              : Protocol header address	协议头地址
 *
-* @return : Return effective data length;-1，return failure
+* @return : Return effective data length;-1，return failure	返回有效数据长度;1,返回失败
 */
 static int32_t gizProtocolCommonAck(protocolHead_t *head)
 {
@@ -765,9 +768,9 @@ static int32_t gizProtocolCommonAck(protocolHead_t *head)
 }
 
 /**
-* @brief ACK processing function
+* @brief ACK processing function	ACK处理函数
 
-* Time-out 200ms no ACK resend，resend two times at most
+* Time-out 200ms no ACK resend，resend two times at most 超时200 ms没有ACK重发,重发两次
 
 * @param none
 *
@@ -789,17 +792,18 @@ static void gizProtocolAckHandle(void)
 		}
 		else
 		{
-			memset((uint8_t *)&gizwitsProtocol.waitAck, 0, sizeof(protocolWaitAck_t));
+			//memset((uint8_t *)&gizwitsProtocol.waitAck, 0, sizeof(protocolWaitAck_t));
+			mcuRestart();
 		}
 	}
 }
 
 /**
-* @brief Protocol 4.1 WiFi module requests device information
+* @brief Protocol 4.1 WiFi module requests device information	WiFi模块请求设备信息
 *
-* @param[in] head : Protocol header address
+* @param[in] head : Protocol header address		协议头地址
 *
-* @return Return effective data length;-1，return failure
+* @return Return effective data length;-1，return failure	返回有效数据长度;1,返回失败
 */
 static int32_t gizProtocolGetDeviceInfo(protocolHead_t * head)
 {
@@ -838,10 +842,10 @@ static int32_t gizProtocolGetDeviceInfo(protocolHead_t * head)
 }
 
 /**
-* @brief Protocol 4.7 Handling of illegal message notification
+* @brief Protocol 4.7 Handling of illegal message notification	处理非法消息通知
 
-* @param[in] head  : Protocol header address
-* @param[in] errno : Illegal message notification type
+* @param[in] head  : Protocol header address		协议头地址
+* @param[in] errno : Illegal message notification type	非法消息通知类型
 * @return 0， success; other， failure
 */
 static int32_t gizProtocolErrorCmd(protocolHead_t *head, errorPacketsType_t errno)
@@ -872,9 +876,9 @@ static int32_t gizProtocolErrorCmd(protocolHead_t *head, errorPacketsType_t errn
 }
 
 /**
-* @brief Protocol 4.13 Get and process network time
+* @brief Protocol 4.13 Get and process network time 获取并处理网络时间
 *
-* @param [in] head : Protocol header address
+* @param [in] head : Protocol header address 协议头地址
 *
 * @return 0， success; other， failure
 */
@@ -902,7 +906,7 @@ static int8_t gizProtocolNTP(protocolHead_t *head)
 }
 
 /**
-* @brief Protocol 4.4 Device MCU restarts function
+* @brief Protocol 4.4 Device MCU restarts function 设备MCU重启功能
 
 * @param none
 * @return none
@@ -918,8 +922,9 @@ static void gizProtocolReboot(void)
 
 /**
 * @brief Protocol 4.5 :The WiFi module informs the device MCU of working status about the WiFi module
+						WiFi模块告知设备MCU关于WiFi模块的工作状态
 
-* @param[in] status WiFi module working status
+* @param[in] status WiFi module working status   状态WiFi模块工作状态
 * @return none
 */
 static int8_t gizProtocolModuleStatus(protocolWifiStatus_t *status)
@@ -1072,16 +1077,16 @@ static int8_t gizProtocolModuleStatus(protocolWifiStatus_t *status)
 }
 
 
-/**@name Gizwits User API interface
+/**@name Gizwits User API interface 机智云用户API接口
 * @{
 */
 
 /**
-* @brief gizwits Protocol initialization interface
+* @brief gizwits Protocol initialization interface gizwits	协议初始化接口
 
-* Protocol-related timer, serial port initialization
+* Protocol-related timer, serial port initialization  与协议相关的定时器，串口初始化
 
-* Datapoint initialization
+* Datapoint initialization		数据初始化
 
 * @param none
 * @return none
@@ -1103,11 +1108,16 @@ void gizwitsInit(void)
 }
 
 /**
-* @brief WiFi configure interface
+* @brief WiFi configure interface  WIFI配置接口
 
 * Set the WiFi module into the corresponding configuration mode or reset the module
+	将WiFi模块设置为相应的配置模式或重置模块
 
-* @param[in] mode ：0x0， reset the module ;0x01， SoftAp mode ;0x02， AirLink mode ;0x03， Production test mode; 0x04:allow users to bind devices
+* @param[in] mode ：	0x0， reset the module ;
+					0x01， SoftAp mode ;
+					0x02，AirLink mode ;
+					0x03， Production test mode; 
+					0x04:allow users to bind devices 允许用户绑定设备
 
 * @return Error command code
 */
@@ -1198,9 +1208,9 @@ int32_t gizwitsSetMode(uint8_t mode)
 }
 
 /**
-* @brief Get the the network time
+* @brief Get the the network time 获取网络时间
 
-* Protocol 4.13:"Device MCU send" of "the MCU requests access to the network time"
+* Protocol 4.13:"Device MCU send" of "the MCU requests access to the network time" “单片机发送”的“MCU请求访问网络时间”
 
 * @param[in] none
 * @return none
@@ -1226,7 +1236,7 @@ void gizwitsGetNTP(void)
 
 
 /**
-* @brief Get Module Info
+* @brief Get Module Info  获取模块信息
 
 *
 
@@ -1255,7 +1265,7 @@ void gizwitsGetModuleInfo(void)
 
 
 /**
-* @brief Module Info Analyse
+* @brief Module Info Analyse  模块信息分析
 *
 * @param [in] head :
 *
@@ -1283,11 +1293,11 @@ static int8_t gizProtocolModuleInfoHandle(protocolHead_t *head)
 }
 
 /**
-* @brief Protocol handling function
+* @brief Protocol handling function   协议处理功能
 
 *
 
-* @param [in] currentData :The protocol data pointer
+* @param [in] currentData :The protocol data pointer  
 * @return none
 */
 int32_t gizwitsHandle(dataPoint_t *currentData)
@@ -1430,9 +1440,10 @@ int32_t gizwitsHandle(dataPoint_t *currentData)
 }
 
 /**
-* @brief gizwits report transparent data interface
+* @brief gizwits report transparent data interface  机智云上报透传数据接口
 
 * The user can call the interface to complete the reporting of private protocol data
+	用户可以调用接口来完成对私有协议数据的上报
 
 * @param [in] data :Private protocol data
 * @param [in] len  :Private protocol data length
