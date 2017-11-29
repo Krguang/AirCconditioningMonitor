@@ -46,8 +46,10 @@
 
 #include "gizwits_product.h"
 #include "modbusToPC.h"
+#include "stmFlash.h"
 
 #define GIZWITS_LOG printf
+
 
 /* USER CODE END Includes */
 
@@ -95,6 +97,9 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  HAL_GPIO_WritePin(G510_ON_GPIO_Port, G510_ON_Pin, GPIO_PIN_RESET);
+  HAL_Delay(1000);
+  HAL_GPIO_WritePin(G510_ON_GPIO_Port, G510_ON_Pin, GPIO_PIN_SET);
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
@@ -107,6 +112,8 @@ int main(void)
   userInit();
   gizwitsInit();
   GIZWITS_LOG("MCU Init Success \n");
+
+ 
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -119,7 +126,6 @@ int main(void)
 	  userHandle();
 	  modbusSlave();
 	  gizwitsHandle((dataPoint_t *)&currentDataPoint);
-
   }
   /* USER CODE END 3 */
 

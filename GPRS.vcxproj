@@ -85,6 +85,7 @@
     <ClCompile Include="Src\modbusToPC.c" />
     <ClCompile Include="Src\stm32f1xx_hal_msp.c" />
     <ClCompile Include="Src\stm32f1xx_it.c" />
+    <ClCompile Include="Src\stmFlash.c" />
     <ClCompile Include="Src\system_stm32f1xx.c" />
     <ClCompile Include="Src\tim.c" />
     <ClCompile Include="Src\usart.c" />
@@ -92,6 +93,7 @@
     <ClCompile Include="Utils\dataPointTools.c" />
     <ClCompile Include="Utils\ringbuffer.c" />
     <ClInclude Include="Inc\modbusToPC.h" />
+    <ClInclude Include="Inc\stmFlash.h" />
     <ClInclude Include="Utils\common.h" />
     <ClInclude Include="Utils\dataPointTools.h" />
     <ClInclude Include="Utils\ringBuffer.h" />

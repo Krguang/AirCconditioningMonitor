@@ -462,6 +462,9 @@
     <ClCompile Include="Src\modbusToPC.c">
       <Filter>Source files\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Src\stmFlash.c">
+      <Filter>Source files\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gizwits\gizwits_product.h">
@@ -480,6 +483,9 @@
       <Filter>Header files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Inc\modbusToPC.h">
+      <Filter>Header files\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\stmFlash.h">
       <Filter>Header files\Inc</Filter>
     </ClInclude>
   </ItemGroup>

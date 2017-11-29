@@ -20,7 +20,7 @@
 #include "common.h"
 #include "usart.h"
 #include "tim.h"
-
+#include "stmFlash.h"
 
 static uint32_t timerMsCount;
 
@@ -28,6 +28,9 @@ static uint32_t timerMsCount;
 dataPoint_t currentDataPoint;
 
 uint16_t localArray[128];
+uint16_t tempAndHumi[2];//0:温度设定值，1：湿度设定值
+
+#define FLASH_SAVE_ADDR  0X0800F000		//设置FLASH 保存地址(必须为偶数，且其值要大于本代码所占用FLASH的大小+0X08000000)
 
 
 int8_t gizwitsEventProcess(eventInfo_t *info, uint8_t *gizdata, uint32_t len)
@@ -171,7 +174,18 @@ int8_t gizwitsEventProcess(eventInfo_t *info, uint8_t *gizdata, uint32_t len)
 */
 void userHandle(void)
 {
-	
+	uint16_t temp[2];
+
+	if (tempAndHumi[0]!=localArray[5]||tempAndHumi[1]!=localArray[6])
+	{
+		tempAndHumi[0] = localArray[5];
+		tempAndHumi[1] = localArray[6];
+		STMFLASH_Write(FLASH_SAVE_ADDR, (uint16_t *)tempAndHumi, 2);
+		printf("runflashwriter\n");
+		STMFLASH_Read(FLASH_SAVE_ADDR, (uint16_t *)temp, 2);
+		printf("%d,%d\n", temp[0], temp[1]);
+	}
+
 	currentDataPoint.valueZS_JiZuYunXing = localArray[9]&1;//Add Sensor Data Collection
 	currentDataPoint.valueZS_ZhiBanYunXing = localArray[10]&1;//Add Sensor Data Collection
 	currentDataPoint.valueZS_FuYaYunXing = (localArray[10]>>1)&1;//Add Sensor Data Collection
@@ -179,6 +193,8 @@ void userHandle(void)
 	currentDataPoint.valueZS_GaoXiaoZuSe = localArray[12]&1;//Add Sensor Data Collection
 	currentDataPoint.valueWenDuZhi = localArray[7];//Add Sensor Data Collection
 	currentDataPoint.valueShiDuZhi = localArray[8];//Add Sensor Data Collection
+	currentDataPoint.valueWenDuSet = localArray[5];
+	currentDataPoint.valueShiDuSet = localArray[6];
 //	currentDataPoint.valueYaChaZhi = ;//Add Sensor Data Collection
 	currentDataPoint.valueLengShuiFa = localArray[13];//Add Sensor Data Collection
 	currentDataPoint.valueReShuiFa = localArray[14];//Add Sensor Data Collection
@@ -197,6 +213,23 @@ void userHandle(void)
 void userInit(void)
 {
 	memset((uint8_t*)&currentDataPoint, 0, sizeof(dataPoint_t));
+	
+	
+	STMFLASH_Read(FLASH_SAVE_ADDR, (uint16_t *)tempAndHumi, 2);
+	printf("chushihua %d,%d\n", tempAndHumi[0], tempAndHumi[1]);
+	printf("initflashresd\n");
+	if (tempAndHumi[0]>999||tempAndHumi[1]>999)
+	{
+		tempAndHumi[0] = 250;
+		tempAndHumi[1] = 500;
+		STMFLASH_Write(FLASH_SAVE_ADDR, (uint16_t *)tempAndHumi, 2);
+		printf("initflashwriter\n");
+	}
+
+	localArray[5] = tempAndHumi[0];
+	localArray[6] = tempAndHumi[1];
+	printf("%d,%d\n", tempAndHumi[0], tempAndHumi[1]);
+	
 
 	/** Warning !!! DataPoint Variables Init , Must Within The Data Range **/
 	/*
