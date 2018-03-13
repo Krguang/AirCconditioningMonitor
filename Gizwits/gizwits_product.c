@@ -174,17 +174,14 @@ int8_t gizwitsEventProcess(eventInfo_t *info, uint8_t *gizdata, uint32_t len)
 */
 void userHandle(void)
 {
-	uint16_t temp[2];
-
+	
 	if (tempAndHumi[0]!=localArray[5]||tempAndHumi[1]!=localArray[6])
 	{
 		tempAndHumi[0] = localArray[5];
 		tempAndHumi[1] = localArray[6];
 		STMFLASH_Write(FLASH_SAVE_ADDR, (uint16_t *)tempAndHumi, 2);
-		printf("runflashwriter\n");
-		STMFLASH_Read(FLASH_SAVE_ADDR, (uint16_t *)temp, 2);
-		printf("%d,%d\n", temp[0], temp[1]);
 	}
+	
 
 	currentDataPoint.valueZS_JiZuYunXing = localArray[9]&1;//Add Sensor Data Collection
 	currentDataPoint.valueZS_ZhiBanYunXing = localArray[10]&1;//Add Sensor Data Collection
@@ -216,19 +213,17 @@ void userInit(void)
 	
 	
 	STMFLASH_Read(FLASH_SAVE_ADDR, (uint16_t *)tempAndHumi, 2);
-	printf("chushihua %d,%d\n", tempAndHumi[0], tempAndHumi[1]);
-	printf("initflashresd\n");
+
 	if (tempAndHumi[0]>999||tempAndHumi[1]>999)
 	{
 		tempAndHumi[0] = 250;
 		tempAndHumi[1] = 500;
 		STMFLASH_Write(FLASH_SAVE_ADDR, (uint16_t *)tempAndHumi, 2);
-		printf("initflashwriter\n");
+		
 	}
 
 	localArray[5] = tempAndHumi[0];
 	localArray[6] = tempAndHumi[1];
-	printf("%d,%d\n", tempAndHumi[0], tempAndHumi[1]);
 	
 
 	/** Warning !!! DataPoint Variables Init , Must Within The Data Range **/

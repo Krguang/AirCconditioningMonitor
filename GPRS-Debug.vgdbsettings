@@ -61,64 +61,20 @@
       <DisableSignals>false</DisableSignals>
       <EnableAsyncExecutionMode>false</EnableAsyncExecutionMode>
       <EnableNonStopMode>false</EnableNonStopMode>
+      <MaxBreakpointLimit>0</MaxBreakpointLimit>
     </AdditionalGDBSettings>
     <DebugMethod>
       <ID>jlink-jtag</ID>
-      <Configuration>
-        <Entries>
-          <KeyValue>
-            <Key>com.sysprogs.jlink.root</Key>
-            <Value>C:\Program Files (x86)\SEGGER\JLinkARM_V486b</Value>
-          </KeyValue>
-          <KeyValue>
-            <Key>com.sysprogs.jlink.connection</Key>
-            <Value>USB</Value>
-          </KeyValue>
-          <KeyValue>
-            <Key>com.sysprogs.jlink.targetdevice</Key>
-            <Value>$$SYS:MCU_ID$$</Value>
-          </KeyValue>
-          <KeyValue>
-            <Key>com.sysprogs.jlink.targetinterface</Key>
-            <Value>SWD</Value>
-          </KeyValue>
-          <KeyValue>
-            <Key>com.sysprogs.jlink.speed</Key>
-            <Value>auto</Value>
-          </KeyValue>
-          <KeyValue>
-            <Key>com.sysprogs.jlink.resetcommand</Key>
-            <Value>mon reset</Value>
-          </KeyValue>
-          <KeyValue>
-            <Key>com.sysprogs.jlink.resetafterload</Key>
-            <Value />
-          </KeyValue>
-          <KeyValue>
-            <Key>com.sysprogs.jlink.livememoryengine</Key>
-            <Value>stub</Value>
-          </KeyValue>
-          <KeyValue>
-            <Key>com.sysprogs.jlink.program</Key>
-            <Value>load</Value>
-          </KeyValue>
-          <KeyValue>
-            <Key>com.sysprogs.jlink.autoprogram</Key>
-            <Value />
-          </KeyValue>
-          <KeyValue>
-            <Key>com.sysprogs.jlink.commands.beforeconnect</Key>
-            <Value />
-          </KeyValue>
-          <KeyValue>
-            <Key>com.sysprogs.jlink.commands.beforeload</Key>
-            <Value />
-          </KeyValue>
-          <KeyValue>
-            <Key>com.sysprogs.jlink.commands.afterload</Key>
-            <Value />
-          </KeyValue>
-        </Entries>
+      <Configuration xsi:type="com.visualgdb.edp.segger.settings">
+        <CommandLine>-select USB -device STM32F103C8 -speed auto -if SWD</CommandLine>
+        <ProgramMode>Enabled</ProgramMode>
+        <StartupCommands>
+          <string>target remote :$$SYS:GDB_PORT$$</string>
+          <string>mon reset</string>
+          <string>load</string>
+          <string>mon reset</string>
+        </StartupCommands>
+        <UseUnreliableLiveMemoryEngine>false</UseUnreliableLiveMemoryEngine>
       </Configuration>
     </DebugMethod>
     <AutoDetectRTOS>true</AutoDetectRTOS>
@@ -130,6 +86,7 @@
     <CheckInterfaceDrivers>true</CheckInterfaceDrivers>
     <DynamicAnalysisSettings />
     <EndOfStackSymbol>_estack</EndOfStackSymbol>
+    <TimestampProviderTicksPerSecond>0</TimestampProviderTicksPerSecond>
   </Debug>
   <CustomBuild>
     <PreSyncActions />
@@ -171,4 +128,5 @@
       <Enabled>false</Enabled>
     </CodeAnalyzerSettings>
   </CodeSense>
+  <ProgramArgumentsSuggestions />
 </VisualGDBProjectSettings2>

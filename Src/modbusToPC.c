@@ -2,7 +2,7 @@
 #include "usart.h"
 #include "gizwits_product.h"
 
-uint8_t slaveAdd = 1;
+uint8_t slaveAdd = 4;
 
 static uint16_t GetCRC16(uint8_t *arr_buff, uint8_t len) {  //CRCÐ£Ñé³ÌÐò
 	uint16_t crc = 0xFFFF;
